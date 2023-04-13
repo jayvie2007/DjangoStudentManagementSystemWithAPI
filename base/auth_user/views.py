@@ -52,7 +52,7 @@ class registerUser(APIView):
         request.data._mutable=False
         serializers = UserSerializer(data=request.data)
         if serializers.is_valid():
-            #serializers.save()
+            serializers.save()
             message = ("You have successfully registered")
             return Response(data={"status": created, "message": message, "Users":serializers.data})
         return Response(serializers.errors, status=bad_request)
