@@ -12,8 +12,32 @@ from constant.status_code import *
 import uuid
 # Create your views here.
 
-class registerUser(APIView):
-    def get(self, request):
+class getUser(APIView):
+    def get(self,request):
         users = AccountModel.objects.all()
         serializers = UserSerializer(users, many=True)
         return Response({"User Registered": serializers.data})
+
+class registerUser(APIView):
+    def post(self,request):
+        #emailInput = request.data['email']
+        #userInput = request.data['username']
+        #passwordInput = request.data['password']
+        #passwordInput2 = request.data['password2']
+        
+        serializers = UserSerializer(data=request.data)
+        uid = generate_uid()
+        request.data._mutable=True
+        request.data['uid'] = uid
+        request.data._mutable=False
+        
+        if serializers.is_valid():
+            #uncomment the serializers.save() if you want to save the data
+            #serializers.save()
+            message = ("You have successfully registered")
+            return Response(data={"status": created, "message": message, "Users":serializers.data})
+        return Response(serializers.errors, status=bad_request)
+
+def generate_uid():
+    uid = uuid.uuid4().hex[-8:]
+    return uid
