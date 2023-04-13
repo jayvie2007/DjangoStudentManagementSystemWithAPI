@@ -22,10 +22,15 @@ class registerUser(APIView):
     def post(self,request):
         #emailInput = request.data['email']
         #userInput = request.data['username']
-        #passwordInput = request.data['password']
-        #passwordInput2 = request.data['password2']
-        
+        passwordInput = request.data['password']
+        passwordInput2 = request.data['password2']
+
         serializers = UserSerializer(data=request.data)
+
+        if passwordInput != passwordInput2:
+            message = ("Password does not match!")
+            return Response(data={"status":bad_request, "message": message})      
+
         uid = generate_uid()
         request.data._mutable=True
         request.data['uid'] = uid
