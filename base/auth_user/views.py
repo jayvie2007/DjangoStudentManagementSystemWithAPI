@@ -20,32 +20,30 @@ class getUser(APIView):
 class registerUser(APIView):
     def post(self,request):
         errors = {}
+
+#initialize the data from the database
+        required_fields = ['fname','lname','email','username','password','password2']
+#then loop the data if that specific field is in the request.data if not error will be returned
+        for required_field in required_fields:
+            if required_field not in request.data:
+                errors[required_field] = field_required_error
+            if len(errors) != 0:
+                return Response(data={"status": bad_request , 'message':errors}, status=bad_request)
+        
         emailInput = request.data['email']
         userInput = request.data['username']
         passwordInput = request.data['password']
         passwordInput2 = request.data['password2']
-        
-        try:
-            email_exist = AccountModel.objects.get(
-                email = emailInput,
-            )
-            print(email_exist)
-            message=(f"the email {emailInput} is already taken!")
-            return Response(data={"message":message})
-        except:
-            pass
-
-        try:
-            users = AccountModel.objects.get(
-            username = userInput
-            )
-            message=(f"the username {userInput} is already taken!")
-            return Response(data={"message":message})
-        except:
-            pass
+       
+        if 'email' in request.data and AccountModel.objects.filter(email = emailInput).count() != 0:
+            errors['email']=(f"the email {emailInput} is already taken!")
+        if 'username' in request.data and AccountModel.objects.filter(username = userInput).count() != 0:
+            errors['username']=(f"the username {userInput} is already taken!")
         if passwordInput != passwordInput2:
-            message = ("Password does not match!")
-            return Response(data={"status":bad_request, "message": message})      
+            errors['password']=(f"the password does not match")
+        if len(errors) != 0:
+            return Response(data={'message':errors}, status=bad_request)
+             
         uid = generate_uid()
         request.data._mutable=True
         request.data['uid'] = uid
