@@ -15,3 +15,5 @@ field_required_error = ['This field is required']
 ###############SUCCESS##################
 updated = ['Success Updating']
 register_success = ['Successfully Registered']
+login_success = ['Successfully Login']
+incorrect_value = ['Incorrect input']
