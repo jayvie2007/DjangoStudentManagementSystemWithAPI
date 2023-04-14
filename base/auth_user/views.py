@@ -77,8 +77,15 @@ class editUser(APIView):
             return Response(data={'status':ok, 'message':updated})
         return Response(serializers.errors, status=bad_request)
         
-
-
+class deleteUser(APIView):
+    def delete(self, request, uid):
+        try:
+            users = AccountModel.objects.get(uid = uid)
+        except AccountModel.DoesNotExist:
+            return Response(data={'status': not_found})
+        users.delete()
+        return Response(data={'status': no_content})
+    
 def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
