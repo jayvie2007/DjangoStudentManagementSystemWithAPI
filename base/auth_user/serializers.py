@@ -5,4 +5,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountModel
         fields = '__all__'
-        exclude = ['password2']
+        
+class UserSerialiazerEditAPI(serializers.ModelSerializer):
+    class Meta:
+        model = AccountModel
+        fields = ['fname', 'lname']

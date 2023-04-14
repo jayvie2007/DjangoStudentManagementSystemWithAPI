@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import AccountModel
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserSerialiazerEditAPI
 
 from constant.status_code import * 
 
@@ -51,9 +51,33 @@ class registerUser(APIView):
         serializers = UserSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            message = ("You have successfully registered")
-            return Response(data={"status": created, "message": message, "Users":serializers.data})
+            return Response(data={"status": created, "message": register_success, "Users":serializers.data})
         return Response(serializers.errors, status=bad_request)
+
+class editUser(APIView):
+    def put(self, request, uid):
+        errors = {}
+        
+        required_fields = ['fname','lname']
+
+        for required_field in required_fields:
+            if required_field not in request.data:
+                errors[required_field] = field_required_error
+            if len(errors) != 0:
+                return Response(data={'message':errors,}, status=bad_request)
+
+        try:
+            users = AccountModel.objects.get(uid = uid)
+        except AccountModel.DoesNotExist:
+            return Response(data={'status': not_found})
+        
+        serializers = UserSerialiazerEditAPI(users, data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(data={'status':ok, 'message':updated})
+        return Response(serializers.errors, status=bad_request)
+        
+
 
 def generate_uid():
     uid = uuid.uuid4().hex[-8:]
