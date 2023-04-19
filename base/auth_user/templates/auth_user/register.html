@@ -1,0 +1,65 @@
+{% load static %}
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/register.css" />
+    <title>Contact</title>
+  </head>
+
+  <body>
+    <div class="topnav">
+      <!--do not add href in mcc ics foa company this is for display-->
+      <a class="active" href="{% url 'index' %}"
+        ><i
+          class="fa-solid fa-circle-notch fa-spin fa-lg"
+          style="color: #fff"
+        ></i>
+        JDL</a
+      >
+      <!--navigation-->
+      <div class="topnav-right">
+        <a class="active" href="{% url 'index' %}">Home</a>
+        <a href="#">Login</a>
+      </div>
+    </div>
+    <!--The contact form-->
+    <!--The action ="create.php" in every form method is used to send data to mongodb-->
+    <form
+      method="post"
+      action="create.php"
+      onSubmit="alert('We have received your feedback!');"
+    >
+      <div class="input-group">
+        <label>Have any question? Send us a message!</label>
+        <input type="text" name="fname" placeholder="Username" required />
+      </div>
+      <div class="input-group">
+        <input
+          type="email"
+          name="eaddress"
+          placeholder="Email Address"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          type="password"
+          name="password2"
+          placeholder="Confirm Password"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <button type="submit" name="submitform" class="button">Register</button>
+      </div>
+    </form>
+  </body>
+</html>
