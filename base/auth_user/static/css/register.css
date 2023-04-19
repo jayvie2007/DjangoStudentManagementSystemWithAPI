@@ -1,0 +1,98 @@
+body{
+	margin: 0;
+	font-family: latha;
+	color:white;
+	background: url(../img/bg1.png)no-repeat;
+	background-size: cover;
+}
+/* Style the navigation*/			
+.topnav {
+	overflow: hidden;
+	background-color: #333;
+	opacity: 0.9;
+}
+
+.topnav a {
+	float: left;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+
+}
+
+.topnav a:hover{
+	background-color: #ddd;
+	color: black;
+}
+
+.topnav a.active {
+	background-color: #bf1e2e;
+	color: white;
+}
+
+.topnav-right {
+	float: right;
+}
+/* Style the navigation*/				
+
+/* Style the forms */		
+form, .content{
+	float:left;
+	width: 500px;
+	margin: 160px 680px;
+	padding: 20px;
+	border: 1px solid #333;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);
+	height: 500px;
+  
+}
+
+.input-group{
+    margin: 10px 0px 20px 0px;
+	
+}
+
+.input-group label{
+	display:block;
+	text-align: left;
+	margin:10px;
+	font-family: arial;
+	font-size: 26px;
+}
+
+.input-group input, textarea{
+	width: 97%;
+	padding: 10px 10px;
+	font-size:16px;
+	border-radius: 10px;
+	outline: none;
+	resize: none;
+}
+
+.textinput{
+  height: 110px;
+  word-wrap: break-word;
+}
+/* Style the forms */	
+
+/* Style the buttons */
+.button {
+	margin: 10px 180px;
+	padding: 10px;
+	font-size:15px;
+	color: #ddd;
+	background: #bf1e2e;
+	border: 1px solid #333;
+	border-radius: 10px;
+	font-family: arial;
+}
+
+.button:hover{
+	background-color:#ddd;
+	color: black;
+}
+
+/* Style the buttons */
