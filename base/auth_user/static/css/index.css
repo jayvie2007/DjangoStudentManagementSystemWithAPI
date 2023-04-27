@@ -60,7 +60,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    text-align: center;
     color: #fff;
 }
 
@@ -76,7 +75,7 @@
 }
 
 button {
-    width: 150px;
+    width: 100%;
     padding: 15px 0;
     text-align: center;
     margin: 20px 10px;

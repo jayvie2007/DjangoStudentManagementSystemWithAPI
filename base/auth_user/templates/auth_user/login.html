@@ -4,15 +4,15 @@
 {% block header %} <link rel="stylesheet" type ="text/css" href="{% static 'css/login.css' %}"> {% endblock %}
 
 {% block body %}
-
+<div class="content">
 <div class="container-sm">
     <form action = "{% url 'register' %}" method="post" class="row g-3">
         <div class="col-md-12">
-            <label for="inputEmail4" class="form-label">Username</label>
+            <label for="inputEmail4" class="form-label">Username:</label>
             <input name = "username" type="text" class="form-control" id="input_firstname" required>
         </div>
         <div class="col-md-12">
-            <label for="inputEmail4" class="form-label">Password</label>
+            <label for="inputEmail4" class="form-label">Password:</label>
             <input name = "password" type="text" class="form-control" id="input_firstname" required>
         </div>
         <div class="col-2">
@@ -25,9 +25,9 @@
         <p>Don't have an account? <br><a href="{% url 'register' %}">Click Register</a></p>
         </div>
         <div class="col-2">
-            <button type="submit"><span></span><a href="login.html">Login</a></button>
+            <button type="submit"><span></span>Login</button>
         </div>
-    
+    </div>
     </form>
 </div>
 
