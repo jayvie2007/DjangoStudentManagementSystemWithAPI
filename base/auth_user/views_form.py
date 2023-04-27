@@ -8,3 +8,6 @@ def index(request):
 
 def register(request):
     return render(request, 'auth_user/register.html')
+
+def login(request):
+    return render(request, 'auth_user/login.html')

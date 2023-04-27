@@ -1,11 +1,4 @@
-body{
-	margin: 0;
-	font-family: latha;
-	color:white;
-	background: url(../img/bg1.png)no-repeat;
-	background-size: cover;
-}
-/* Style the navigation*/	
+/* Style the navigation*/
 .topnav {
 	overflow: hidden;
 	background-color: #333;
@@ -21,7 +14,7 @@ body{
 	font-size: 17px;
 }
 
-.topnav a:hover{
+.topnav a:hover {
 	background-color: #ddd;
 	color: black;
 }
@@ -34,12 +27,13 @@ body{
 .topnav-right {
 	float: right;
 }
-/* Style the navigation*/	
+
+/* Style the navigation*/
 
 /* Style the body */
-.wd{
+.wd {
 	margin: 100px 150px;
-	width: 1500px;
+	width: 25%;
 	height: 600px;
 	background: url(../img/text.png)no-repeat;
 	background-size: cover;
@@ -47,4 +41,5 @@ body{
 	padding: 55px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1);
 }
+
 /* Style the body */
