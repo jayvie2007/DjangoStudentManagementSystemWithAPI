@@ -8,5 +8,6 @@ urlpatterns = [
     path('api/user/<str:uid>', views_api.editUser.as_view(), name="edituser"),
     path('api/user/<str:uid>', views_api.deleteUser.as_view(), name="edituser"),
     path('api/login', views_api.loginAPI.as_view(), name = 'login'),
-    path('register/', views_form.register, name="register")
+    path('register/', views_form.register, name="register"),
+    path('login/', views_form.login, name="login"),
    ]

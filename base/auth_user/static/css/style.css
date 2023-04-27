@@ -1,11 +1,3 @@
-body {
-	margin: 0;
-	font-family: latha;
-	color: white;
-	background: url(../img/bg1.png)no-repeat;
-	background-size: cover;
-}
-
 /* Style the navigation*/
 .topnav {
 	overflow: hidden;
