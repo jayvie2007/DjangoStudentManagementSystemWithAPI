@@ -1,6 +1,7 @@
 {% extends 'auth_user/base2.html/' %}
 {% load static %}
 {% block title %} Login {% endblock %}
+{% block css %} {% endblock %}
 {% block header %} <link rel="stylesheet" type ="text/css" href="{% static 'css/login.css' %}"> {% endblock %}
 
 {% block body %}
@@ -16,7 +17,7 @@
             <input name = "password" type="text" class="form-control" id="input_firstname" required>
         </div>
         <div class="col-2">
-            <button type="button"><span></span><a href="#">Back</a></button>
+            <button type="button"><span></span><a href="{% url 'index' %}">Back</a></button>
         </div>
         <div class="col-4">
         <p><a href="#"> Forgot Password?</a></p>
