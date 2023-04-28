@@ -58,7 +58,7 @@ class editUser(APIView):
     def put(self, request, uid):
         errors = {}
         
-        required_fields = ['fname','lname']
+        required_fields = ['first_name','middle_name','last_name']
 
         for required_field in required_fields:
             if required_field not in request.data:
@@ -110,7 +110,14 @@ class loginAPI(APIView):
             except CustomUser.DoesNotExist:
 
                 try:
-                    email = CustomUser.objects.get(email = emailInput)
+                    if '@' in emailInput:
+                        email = CustomUser.objects.get(email = emailInput) 
+                        print(email)
+                        print(user.password)
+                    else: 
+                        input_user = CustomUser.objects.get(username = userInput)
+                        print(input_user)
+                        print(user.password)
                 except:
                     return Response(data={"status": bad_request, 'message': incorrect_value})
                 

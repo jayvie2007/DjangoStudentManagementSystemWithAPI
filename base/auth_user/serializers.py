@@ -4,7 +4,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        exclude = ('id', 'last_login','is_superuser','is_staff','is_active','date_joined','groups','user_permissions')
         
 class UserSerialiazerEditAPI(serializers.ModelSerializer):
     class Meta:

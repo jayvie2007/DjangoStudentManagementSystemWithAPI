@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib import auth
 from .models import CustomUser
+
+import uuid
 
 
 import uuid
@@ -18,7 +20,7 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-        print(username)
+        uid = generate_uid()
 
         if password == confirm_password:
             if CustomUser.objects.filter(username=username):
@@ -29,6 +31,7 @@ def register(request):
                 return redirect('register_user')
             else:
                 new_user = CustomUser.objects.create(
+                    uid = uid,
                     first_name = first_name,
                     middle_name = middle_name,
                     last_name = last_name,
@@ -37,12 +40,38 @@ def register(request):
                     password = password,
                 )
                 new_user.save()
-                return redirect('login_user')
+                
+                return redirect('login_user',{
+                    'success': True,
+                })
         else:
             messages.info(request, 'Password does not match')
-            return redirect('login_user')
+            print("error")
+            return redirect('register_user')
     return render(request, 'auth_user/register.html')
 
-def login(request):
+def generate_uid():
+    uid = uuid.uuid4().hex[-8:]
+    return uid
 
-    return render(request, 'auth_user/login.html')
+def login(request):
+    if request.method == 'POST':
+        username_or_email = request.POST['username_or_email']
+        password = request.POST['password']
+
+        user = auth.authenticate(request, username=username_or_email, password=password)
+        print(user)
+        if user is not None:
+            auth.login(request,user)
+            return redirect('index')
+        else:
+            messages.info(request, 'Invalid Username or Password')
+            return redirect('login_user')
+    else:
+        print("invalid")
+        return render(request, "auth_user/login.html")
+    
+def logout(request):
+    auth.logout(request)
+    return redirect('index')
+        

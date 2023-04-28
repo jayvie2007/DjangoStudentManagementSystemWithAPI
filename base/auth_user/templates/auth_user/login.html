@@ -7,10 +7,11 @@
 {% block body %}
 <div class="content">
 <div class="container-sm">
-    <form action = "{% url 'register_user' %}" method="post" class="row g-3">
+    <form action = "{% url 'login_user' %}" method="post" class="row g-3">
+        {% csrf_token %}
         <div class="col-md-12">
-            <label for="inputEmail4" class="form-label">Username:</label>
-            <input name = "username" type="text" class="form-control" id="input_firstname" required>
+            <label for="inputEmail4" class="form-label">Username or Email:</label>
+            <input name = "username_or_email" type="text" class="form-control" id="input_firstname" pattern="^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[a-zA-Z0-9_]+$" required>
         </div>
         <div class="col-md-12">
             <label for="inputEmail4" class="form-label">Password:</label>
