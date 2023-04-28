@@ -8,6 +8,7 @@
 <div class="content">
 <div class="container-sm">
     <form action = "{% url 'register_user' %}" method="post" class="row g-3">
+        {% csrf_token %}
       <div class="col-md-4">
         <label for="inputEmail4" class="form-label">First Name:</label>
         <input name = "first_name" type="text" class="form-control" id="input_firstname" required>
@@ -45,7 +46,7 @@
         <p>Have an account? <br><a href="{% url 'login_user' %}">Login Here</a></p>
         </div>
         <div class="col-2">
-            <button type="submit"><span></span>Login</button>
+            <button type="submit"><span></span>Register</button>
         </div>
     </div>
     </form>

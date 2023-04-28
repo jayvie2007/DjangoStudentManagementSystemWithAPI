@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import AccountModel
+from .models import CustomUser
 from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer
 
 from constant.status_code import * 
@@ -13,7 +13,7 @@ import uuid
 
 class getUser(APIView):
     def get(self,request):
-        users = AccountModel.objects.all()
+        users = CustomUser.objects.all()
         serializers = UserSerializer(users, many=True)
         return Response({"User Registered": serializers.data})
 
@@ -22,7 +22,7 @@ class registerUser(APIView):
         errors = {}
 
 #initialize the data from the database
-        required_fields = ['fname','lname','email','username','password','password2']
+        required_fields = ['first_name','middle_name' ,'last_name','email','username','password','password2']
 #then loop the data if that specific field is in the request.data if not error will be returned
         for required_field in required_fields:
             if required_field not in request.data:
@@ -35,9 +35,9 @@ class registerUser(APIView):
         passwordInput = request.data['password']
         passwordInput2 = request.data['password2']
        
-        if 'email' in request.data and AccountModel.objects.filter(email = emailInput).count() != 0:
+        if 'email' in request.data and CustomUser.objects.filter(email = emailInput).count() != 0:
             errors['email']=(f"the email {emailInput} is already taken!")
-        if 'username' in request.data and AccountModel.objects.filter(username = userInput).count() != 0:
+        if 'username' in request.data and CustomUser.objects.filter(username = userInput).count() != 0:
             errors['username']=(f"the username {userInput} is already taken!")
         if passwordInput != passwordInput2:
             errors['password']=(f"the password does not match")
@@ -67,8 +67,8 @@ class editUser(APIView):
                 return Response(data={'message':errors,}, status=bad_request)
 
         try:
-            users = AccountModel.objects.get(uid = uid)
-        except AccountModel.DoesNotExist:
+            users = CustomUser.objects.get(uid = uid)
+        except CustomUser.DoesNotExist:
             return Response(data={'status': not_found})
         
         serializers = UserSerialiazerEditAPI(users, data=request.data)
@@ -80,8 +80,8 @@ class editUser(APIView):
 class deleteUser(APIView):
     def delete(self, request, uid):
         try:
-            users = AccountModel.objects.get(uid = uid)
-        except AccountModel.DoesNotExist:
+            users = CustomUser.objects.get(uid = uid)
+        except CustomUser.DoesNotExist:
             return Response(data={'status': not_found})
         users.delete()
         return Response(data={'status': no_content})
@@ -106,11 +106,11 @@ class loginAPI(APIView):
         serializers = Login_UserSerializer(data = request.data)
         if serializers.is_valid():
             try:
-                user = AccountModel.objects.get(username = userInput)
-            except AccountModel.DoesNotExist:
+                user = CustomUser.objects.get(username = userInput)
+            except CustomUser.DoesNotExist:
 
                 try:
-                    email = AccountModel.objects.get(email = emailInput)
+                    email = CustomUser.objects.get(email = emailInput)
                 except:
                     return Response(data={"status": bad_request, 'message': incorrect_value})
                 
