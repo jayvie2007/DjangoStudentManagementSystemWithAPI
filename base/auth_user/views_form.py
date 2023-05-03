@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib import auth
-from .models import CustomUser
-
-import uuid
-
+from django.contrib import messages, auth
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from .models import CustomUser, UserData
+from .forms import UserForm
 
 import uuid
 
@@ -54,44 +53,82 @@ def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
-        username_or_email = request.POST['username_or_email']
+        username_or_email = request.POST['username']
         password = request.POST['password']
 
-        user = auth.authenticate(request, username=username_or_email, password=password)
-        print(user)
+        User = get_user_model()
+        user1 = User.objects.all()
+        user = auth.authenticate(request, uid=username_or_email)
+        print(user1)
 
-        try:
-                    if '@' in username_or_email:
-                        email = CustomUser.objects.get(email = username_or_email) 
-                        print(email)
-                        print(user.password)
-                        if user is not None:
-                            auth.login(request,user)
-                            return redirect('index')
-                        else:
-                            messages.info(request, 'Invalid Username or Password')
-                            return redirect('login_user')
-                    else: 
-                        input_user = CustomUser.objects.get(username = username_or_email)
-                        print(input_user)
-                        print(user.password)
-                        if user is not None:
-                            auth.login(request,user)
-                            return redirect('index')
-                        else:
-                            messages.info(request, 'Invalid Username or Password')
-                            return redirect('login_user')
-        except:
-            print("invalid")
-            return render(request, "auth_user/login.html")
+        if user is not None:
+            auth.login(request,user)
+            return redirect('index')
+        else:
+            messages.info(request, 'Invalid Username or Password')
+            return redirect('login_user')
+
+        # try:
+        #             if '@' in username_or_email:
+        #                 email = CustomUser.objects.get(email = username_or_email) 
+        #                 if user is not None:
+        #                     auth.login(request,user)
+        #                     return redirect('index')
+        #                 else:
+        #                     messages.info(request, 'Invalid Username or Password')
+        #                     return redirect('login_user')
+        #             else: 
+        #                 input_user = CustomUser.objects.get(username = username_or_email)
+        #                 if user is not None:
+        #                     auth.login(request,user)
+        #                     return redirect('index')
+        #                 else:
+        #                     messages.info(request, 'Invalid Username or Password')
+        #                     return redirect('login_user')
+        # except:
+        #     return render(request, "auth_user/login.html")
         
     else:
-        print("invalid")
         return render(request, "auth_user/login.html")
     
-def logout(request):
+def logout_view(request):
     auth.logout(request)
     return redirect('index')
         
+def database(request):
+    return render(request, 'auth_user/database.html',{
+        'userdata': UserData.objects.all()
+        })
+
+
+def add(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_student_number = generate_uid()
+            new_first_name = form.cleaned_data['first_name']
+            new_last_name = form.cleaned_data['last_name']
+            new_email = form.cleaned_data['email']
+            new_course = form.cleaned_data['course']
+            new_gpa = form.cleaned_data['gpa']
+
+            new_student = UserData(
+                student_number = new_student_number,
+                first_name = new_first_name,
+                last_name = new_last_name,
+                email = new_email,
+                course = new_course,
+                gpa = new_gpa,
+            )
+            new_student.save()
+            return render(request, 'auth_user/add.html', {
+                'form': UserForm(),
+                'success':True,
+            })
+    else:
+        form = UserForm()
+    return render(request, 'auth_user/add.html',{
+    'form': UserForm()
+    })
