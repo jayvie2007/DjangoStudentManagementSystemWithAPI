@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib import auth
+from django.contrib.auth.models import User
 from .models import CustomUser
 
 import uuid
@@ -56,19 +57,21 @@ def generate_uid():
 
 def login(request):
     if request.method == 'POST':
-        username_or_email = request.POST['username_or_email']
+        username = request.POST['username']
         password = request.POST['password']
+        abc = User.objects.filter(
+            username = username,
 
-        user = auth.authenticate(request, username=username_or_email, password=password)
-        print(user)
+        )
+        print (abc)
+        user = auth.authenticate(request, username=username, password=password)
         if user is not None:
-            auth.login(request,user)
+            auth.login(request, user)
             return redirect('index')
         else:
             messages.info(request, 'Invalid Username or Password')
             return redirect('login_user')
     else:
-        print("invalid")
         return render(request, "auth_user/login.html")
     
 def logout(request):
