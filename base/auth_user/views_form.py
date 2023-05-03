@@ -3,10 +3,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import CustomUser, UserData
-
-
-import uuid
-
+from .forms import UserForm
 
 import uuid
 
@@ -105,5 +102,33 @@ def database(request):
         'userdata': UserData.objects.all()
         })
 
+
 def add(request):
-    return render(request, 'auth_user/add.html')
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_student_number = generate_uid()
+            new_first_name = form.cleaned_data['first_name']
+            new_last_name = form.cleaned_data['last_name']
+            new_email = form.cleaned_data['email']
+            new_course = form.cleaned_data['course']
+            new_gpa = form.cleaned_data['gpa']
+
+            new_student = UserData(
+                student_number = new_student_number,
+                first_name = new_first_name,
+                last_name = new_last_name,
+                email = new_email,
+                course = new_course,
+                gpa = new_gpa,
+            )
+            new_student.save()
+            return render(request, 'auth_user/add.html', {
+                'form': UserForm(),
+                'success':True,
+            })
+    else:
+        form = UserForm()
+    return render(request, 'auth_user/add.html',{
+    'form': UserForm()
+    })
