@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
 
 class UserData(models.Model):
+    student_number = models.CharField(max_length=8, default="")
     fname = models.CharField(max_length=50)
     mname = models.CharField(max_length=50)
     lname = models.CharField(max_length=50)

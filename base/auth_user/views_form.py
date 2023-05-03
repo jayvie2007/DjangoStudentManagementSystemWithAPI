@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-from .models import CustomUser
+from .models import CustomUser, UserData
 
 
 import uuid
@@ -56,13 +56,15 @@ def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST['username']
         password = request.POST['password']
 
         User = get_user_model()
-        user = auth.authenticate(request, username=username_or_email)
+        user1 = User.objects.all()
+        user = auth.authenticate(request, uid=username_or_email)
+        print(user1)
 
         if user is not None:
             auth.login(request,user)
@@ -94,9 +96,14 @@ def login(request):
     else:
         return render(request, "auth_user/login.html")
     
-def logout(request):
+def logout_view(request):
     auth.logout(request)
     return redirect('index')
         
 def database(request):
-    return render(request, "auth_user/database.html")
+    return render(request, 'auth_user/database.html',{
+        'userdata': UserData.objects.all()
+        })
+
+def add(request):
+    return render(request, 'auth_user/add.html')

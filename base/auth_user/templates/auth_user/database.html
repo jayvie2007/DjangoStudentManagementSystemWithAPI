@@ -6,7 +6,7 @@
 
 <ul>
   <li><a href="{% url 'index' %}">Home</a></li>
-  <li><a href="#">Add Data</a></li>
+  <li><a href="{% url 'add' %}">Add Data</a></li>
   <li><a href="#">Edit Data</a></li>
   <li><a href="#">Delete Data</a></li>
   <li><a href="#">LogOut</a></li>
@@ -36,6 +36,17 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <!--Initialize loop to call students data in objects-->
+                    {% for userdata in userdatas %}
+                    <tr>
+                      <!--calling students data inside the loop-->
+                      <td>{{ userdata.student_number }}</td>
+                      <td>{{ userdata.last_name }}</td>
+                      <td>{{ userdata.first_name }}</td>
+                      <td>{{ userdata.email }}</td>
+                      <td>{{ userdata.course }}</td>
+                      <td>{{ userdata.gpa }}</td>
+                      <td>
         </div>
       </div>
     </div>

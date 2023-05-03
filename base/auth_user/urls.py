@@ -9,7 +9,8 @@ urlpatterns = [
     path('api/user/<str:uid>', views_api.deleteUser.as_view(), name="delete_api"),
     path('api/login', views_api.loginAPI.as_view(), name = 'login_api'),
     path('register/', views_form.register, name="register_user"),
-    path('login/', views_form.login, name="login_user"),
-    path('logout/', views_form.logout, name="logout_user"),
+    path('login/', views_form.login_view, name="login_user"),
+    path('logout/', views_form.logout_view, name="logout_user"),
     path('database/', views_form.database, name="database"),
-   ]
+    path('database/add/', views_form.add, name="add"),
+]
