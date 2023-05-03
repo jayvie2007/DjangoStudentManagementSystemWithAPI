@@ -57,20 +57,37 @@ def generate_uid():
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        username_or_email = request.POST['username']
         password = request.POST['password']
-        abc = User.objects.filter(
-            username = username,
 
-        )
-        print (abc)
-        user = auth.authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            return redirect('index')
-        else:
-            messages.info(request, 'Invalid Username or Password')
-            return redirect('login_user')
+        user = auth.authenticate(request, username=username_or_email, password=password)
+        print(user)
+
+        try:
+                    if '@' in username_or_email:
+                        email = CustomUser.objects.get(email = username_or_email) 
+                        print(email)
+                        print(user.password)
+                        if user is not None:
+                            auth.login(request,user)
+                            return redirect('index')
+                        else:
+                            messages.info(request, 'Invalid Username or Password')
+                            return redirect('login_user')
+                    else: 
+                        input_user = CustomUser.objects.get(username = username_or_email)
+                        print(input_user)
+                        print(user.password)
+                        if user is not None:
+                            auth.login(request,user)
+                            return redirect('index')
+                        else:
+                            messages.info(request, 'Invalid Username or Password')
+                            return redirect('login_user')
+        except:
+            print("invalid")
+            return render(request, "auth_user/login.html")
+        
     else:
         return render(request, "auth_user/login.html")
     
