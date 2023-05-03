@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', views_form.register, name="register_user"),
     path('login/', views_form.login, name="login_user"),
     path('logout/', views_form.logout, name="logout_user"),
+    path('database/', views_form.database, name="database"),
    ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib import auth
+from django.contrib import messages, auth
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .models import CustomUser
 
 import uuid
@@ -60,33 +60,37 @@ def login(request):
         username_or_email = request.POST['username']
         password = request.POST['password']
 
-        user = auth.authenticate(request, username=username_or_email, password=password)
+        User = get_user_model()
+        user = auth.authenticate(request, username=username_or_email)
+        print(username_or_email)
+        print(password)
         print(user)
+        if user is not None:
+            auth.login(request,user)
+            return redirect('index')
+        else:
+            messages.info(request, 'Invalid Username or Password')
+            return redirect('login_user')
 
-        try:
-                    if '@' in username_or_email:
-                        email = CustomUser.objects.get(email = username_or_email) 
-                        print(email)
-                        print(user.password)
-                        if user is not None:
-                            auth.login(request,user)
-                            return redirect('index')
-                        else:
-                            messages.info(request, 'Invalid Username or Password')
-                            return redirect('login_user')
-                    else: 
-                        input_user = CustomUser.objects.get(username = username_or_email)
-                        print(input_user)
-                        print(user.password)
-                        if user is not None:
-                            auth.login(request,user)
-                            return redirect('index')
-                        else:
-                            messages.info(request, 'Invalid Username or Password')
-                            return redirect('login_user')
-        except:
-            print("invalid")
-            return render(request, "auth_user/login.html")
+        # try:
+        #             if '@' in username_or_email:
+        #                 email = CustomUser.objects.get(email = username_or_email) 
+        #                 if user is not None:
+        #                     auth.login(request,user)
+        #                     return redirect('index')
+        #                 else:
+        #                     messages.info(request, 'Invalid Username or Password')
+        #                     return redirect('login_user')
+        #             else: 
+        #                 input_user = CustomUser.objects.get(username = username_or_email)
+        #                 if user is not None:
+        #                     auth.login(request,user)
+        #                     return redirect('index')
+        #                 else:
+        #                     messages.info(request, 'Invalid Username or Password')
+        #                     return redirect('login_user')
+        # except:
+        #     return render(request, "auth_user/login.html")
         
     else:
         return render(request, "auth_user/login.html")
@@ -95,3 +99,5 @@ def logout(request):
     auth.logout(request)
     return redirect('index')
         
+def database(request):
+    return render(request, "auth_user/database.html")
