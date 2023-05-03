@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .models import CustomUser
 
+
 import uuid
 
 
@@ -62,9 +63,7 @@ def login(request):
 
         User = get_user_model()
         user = auth.authenticate(request, username=username_or_email)
-        print(username_or_email)
-        print(password)
-        print(user)
+
         if user is not None:
             auth.login(request,user)
             return redirect('index')

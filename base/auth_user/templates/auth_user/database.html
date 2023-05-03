@@ -2,14 +2,44 @@
 {% load static %}
 {% block title %} Login {% endblock %}
 {% block css %}<link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> {% endblock %}
-{% block header %} <ul>
-  <li><a href="index.html">Home</a></li>
+{% block header %} 
+
+<ul>
+  <li><a href="{% url 'index' %}">Home</a></li>
   <li><a href="#">Add Data</a></li>
   <li><a href="#">Edit Data</a></li>
   <li><a href="#">Delete Data</a></li>
   <li><a href="#">LogOut</a></li>
 </ul> {% endblock %}
+
 {% block body %}
-\ackyard</a></li>
-</ul>
+
+<div class="container-sm">
+  <div class="row">
+    <div class="col=12">
+      <div class="card bg-light mg-4 mb-4">
+        <div class="card-header">
+          <i class="fa-solid fa-list fa-lg"></i> Student Records
+          <div class="card-body">
+            <p class="card-text">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Student Number</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Course</th>
+                      <th scope="col">GPA </th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
