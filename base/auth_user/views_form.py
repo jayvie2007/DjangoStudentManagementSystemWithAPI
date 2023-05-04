@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from .models import CustomUser, UserData
 from .forms import UserForm
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.contrib.auth.hashers import make_password
 
+import random
 import uuid
 
 def index(request):
@@ -36,11 +39,12 @@ def register(request):
                     last_name = last_name,
                     username = username,
                     email = email,
-                    password = password,
+                    password = make_password(password),
                 )
                 new_user.save()
                 
                 return redirect('login_user',{
+                    'form': UserForm(),
                     'success': True,
                 })
         else:
@@ -53,82 +57,90 @@ def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
 
+
+def generate_uid2():
+    uid = random.randint(10000000, 99999999)
+    return uid
+
 def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST['username']
         password = request.POST['password']
-
-        User = get_user_model()
-        user1 = User.objects.all()
-        user = auth.authenticate(request, uid=username_or_email)
-        print(user1)
-
+        user = auth.authenticate(request, username=username_or_email, password=password)
         if user is not None:
             auth.login(request,user)
             return redirect('index')
         else:
             messages.info(request, 'Invalid Username or Password')
             return redirect('login_user')
-
-        # try:
-        #             if '@' in username_or_email:
-        #                 email = CustomUser.objects.get(email = username_or_email) 
-        #                 if user is not None:
-        #                     auth.login(request,user)
-        #                     return redirect('index')
-        #                 else:
-        #                     messages.info(request, 'Invalid Username or Password')
-        #                     return redirect('login_user')
-        #             else: 
-        #                 input_user = CustomUser.objects.get(username = username_or_email)
-        #                 if user is not None:
-        #                     auth.login(request,user)
-        #                     return redirect('index')
-        #                 else:
-        #                     messages.info(request, 'Invalid Username or Password')
-        #                     return redirect('login_user')
-        # except:
-        #     return render(request, "auth_user/login.html")
-        
     else:
         return render(request, "auth_user/login.html")
     
 def logout_view(request):
     auth.logout(request)
     return redirect('index')
-        
+
+# use @login_required to require authentication before accessing new page        
+@login_required        
 def database(request):
     return render(request, 'auth_user/database.html',{
-        'userdata': UserData.objects.all()
+        'userdatas': UserData.objects.all()
         })
 
-
+@login_required     
 def add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            new_student_number = generate_uid()
-            new_first_name = form.cleaned_data['first_name']
-            new_last_name = form.cleaned_data['last_name']
-            new_email = form.cleaned_data['email']
+            new_student_number = generate_uid2()
+            new_first_name = form.cleaned_data['fname']
+            new_middle_name = form.cleaned_data['mname']
+            new_last_name = form.cleaned_data['lname']
+            new_year = form.cleaned_data['year']
             new_course = form.cleaned_data['course']
-            new_gpa = form.cleaned_data['gpa']
+            new_semester = form.cleaned_data['semester']
 
-            new_student = UserData(
+            new_user = UserData(
                 student_number = new_student_number,
-                first_name = new_first_name,
-                last_name = new_last_name,
-                email = new_email,
+                fname = new_first_name,
+                mname = new_middle_name,
+                lname = new_last_name,
+                year = new_year,
                 course = new_course,
-                gpa = new_gpa,
-            )
-            new_student.save()
+                semester = new_semester,
+            ) 
+            new_user.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
-                'success':True,
+                'success':True, 
             })
     else:
         form = UserForm()
     return render(request, 'auth_user/add.html',{
     'form': UserForm()
     })
+
+@login_required     
+def edit(request, student_number):
+    if request.method =='POST':
+        users = UserData.objects.get(student_number=student_number)
+        form = UserForm(request.POST, instance=users)
+        if form.is_valid():
+            form.save()
+            return render(request, 'auth_user/edit.html', {
+                'form': form,
+                'success': True,
+            })
+    else:
+        users = UserData.objects.get(student_number=student_number)
+        form = UserForm(instance=users)
+        return render(request, 'auth_user/edit.html', {
+            'form':form
+        })
+    
+@login_required 
+def delete(request, student_number):
+    if request.method =='POST':
+        users = UserData.objects.get(student_number=student_number)
+        users.delete()
+        return HttpResponseRedirect(reverse('index'))

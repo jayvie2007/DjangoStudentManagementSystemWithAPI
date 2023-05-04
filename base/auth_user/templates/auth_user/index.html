@@ -18,12 +18,17 @@
       <ul>
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'database' %}">Dashboard</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'index' %}">{{ request.user.username }}</a></li>
+        <li><a href="{% url 'logout_user' %}">Logout</a></li>
+        {% else %}
+        {% endif %}
       </ul>
     </div>
 
     <div class="content">
-      <h1>YOUR HOUSE IN A CLICK</h1>
-      <P>Login to be able to purchase a variety of sets for your own home</P>
+      <h1>STUDENT MONITORING SYSTEM</h1>
+      <P>Login to be able to view the list of students enrolled</P>
       <div>
         <button type="button"><span></span><a href="{% url 'register_user' %}">Register</a></button>
         <button type="button"><span></span><a href="{% url 'login_user' %}">Login</a></button>

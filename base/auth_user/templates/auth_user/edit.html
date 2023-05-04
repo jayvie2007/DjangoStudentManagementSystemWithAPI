@@ -12,7 +12,7 @@
       {% block body %}
 {% if success %}
 <div class="alert alert-success" role="alert">
-  The new student has been successfully added!
+  The new student has been successfully updated!
   <a href="{% url 'database' %}" class="alert-link">Go to Home Page.</a>
 </div>
 {% else %}
@@ -24,9 +24,9 @@
         <i class="fa-solid fa-address-card fa-lg"></i> Student Registration
       </div>
       <div class="card-body">
-        <form action="{% url 'add' %}" method="POST">
+        <form action="" method="POST">
           {% csrf_token %} {{ form.as_p }}
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="submit" class="btn btn-primary">Update</button>
           <a href="{% url 'database' %}" class="btn btn-secondary">Cancel</a>
         </form>
       </div>

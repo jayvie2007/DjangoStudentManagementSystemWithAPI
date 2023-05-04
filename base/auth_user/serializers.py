@@ -1,4 +1,4 @@
-from .models import CustomUser
+from .models import CustomUser, UserData
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,3 +18,8 @@ class Login_UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'password' ]
+
+class Student_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = '__all__'

@@ -14,7 +14,6 @@ class UserData(models.Model):
     fname = models.CharField(max_length=50)
     mname = models.CharField(max_length=50)
     lname = models.CharField(max_length=50)
-    bday = models.DateField()
     year = models.CharField(max_length=20)
     course = models.CharField(max_length=50)
     semester = models.CharField(max_length=50)
