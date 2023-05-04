@@ -18,6 +18,11 @@
       <ul>
         <li><a href="{% url 'index' %}">Home</a></li>
         <li><a href="{% url 'database' %}">Dashboard</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'index' %}">{{ request.user.username }}</a></li>
+        <li><a href="{% url 'logout_user' %}">Logout</a></li>
+        {% else %}
+        {% endif %}
       </ul>
     </div>
 

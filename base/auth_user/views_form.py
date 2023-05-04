@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from .models import CustomUser, UserData
 from .forms import UserForm
 
@@ -44,6 +45,7 @@ def register(request):
                 new_user.save()
                 
                 return redirect('login_user',{
+                    'form': UserForm(),
                     'success': True,
                 })
         else:
@@ -104,13 +106,15 @@ def login_view(request):
 def logout_view(request):
     auth.logout(request)
     return redirect('index')
-        
+
+# use @login_required to require authentication before accessing new page        
+@login_required        
 def database(request):
     return render(request, 'auth_user/database.html',{
         'userdatas': UserData.objects.all()
         })
 
-
+@login_required     
 def add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -131,7 +135,7 @@ def add(request):
                 year = new_year,
                 course = new_course,
                 semester = new_semester,
-            )
+            ) 
             new_user.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
@@ -142,3 +146,7 @@ def add(request):
     return render(request, 'auth_user/add.html',{
     'form': UserForm()
     })
+
+@login_required     
+def edit(request):
+    return render(request, 'auth_user/edit.html')

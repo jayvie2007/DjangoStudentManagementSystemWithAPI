@@ -13,4 +13,5 @@ urlpatterns = [
     path('logout/', views_form.logout_view, name="logout_user"),
     path('database/', views_form.database, name="database"),
     path('database/add/', views_form.add, name="add"),
+    path('datebase/edit', views_form.edit, name ="edit"),
 ]
