@@ -5,6 +5,40 @@
 {% block header %} <link rel="stylesheet" type ="text/css" href="{% static 'css/login.css' %}"> {% endblock %}
 
 {% block body %}
+
+{% if success %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+   You have successfully registered!
+    <a href = "{% url 'login_user' %}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a></button>
+  </div>
+  <div class="content">
+    <div class="container-sm">
+        <form action = "{% url 'login_user' %}" method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <label for="inputEmail4" class="form-label">Username or Email:</label>
+                <input name = "username" type="text" class="form-control" id="input_firstname" pattern="^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[a-zA-Z0-9_]+$" required>
+            </div>
+            <div class="col-md-12">
+                <label for="inputEmail4" class="form-label">Password:</label>
+                <input name = "password" type="text" class="form-control" id="input_firstname" required>
+            </div>
+            <div class="col-2">
+                <button type="button"><span></span><a href="{% url 'index' %}">Back</a></button>
+            </div>
+            <div class="col-4">
+            <p><a href="#"> Forgot Password?</a></p>
+            </div>
+            <div class="col-4">
+            <p>Don't have an account? <br><a href="{% url 'register_user' %}">Click Register</a></p>
+            </div>
+            <div class="col-2">
+                <button type="submit"><span></span>Login</button>
+            </div>
+        </div>
+        </form>
+    </div>
+{% else %}
 <div class="content">
 <div class="container-sm">
     <form action = "{% url 'login_user' %}" method="post" class="row g-3">
@@ -33,5 +67,5 @@
     </form>
 </div>
 
-
+{% endif %}
 {% endblock %}

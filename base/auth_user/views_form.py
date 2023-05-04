@@ -26,11 +26,20 @@ def register(request):
 
         if password == confirm_password:
             if CustomUser.objects.filter(username=username):
-                messages.info(request, 'Username already exist!')
-                return redirect('register_user')
+                print("username already exist")
+                message = 'Username already exist!'
+                return render(request, 'auth_user/register.html', {
+                    'register_error': True,
+                    'messagestxt': message,
+                })
             if CustomUser.objects.filter(email=email):
-                messages.info(request, 'Email already exist!')
-                return redirect('register_user')
+                print("email already exist")
+                message = 'Email already exist!'
+                return render(request, 'auth_user/register.html', {
+                    'register_error': True,
+                    'messagestxt': message,
+                })
+                   
             else:
                 new_user = CustomUser.objects.create(
                     uid = uid,
@@ -41,16 +50,19 @@ def register(request):
                     email = email,
                     password = make_password(password),
                 )
-                new_user.save()
-                
-                return redirect('login_user',{
+                #new_user.save()
+                print("success")
+                return render(request, 'auth_user/login.html',{
                     'form': UserForm(),
                     'success': True,
                 })
         else:
+            form = UserForm()
             messages.info(request, 'Password does not match')
-            print("error")
-            return redirect('register_user')
+            return redirect('auth_user/register.html', {
+            'form': UserForm()
+             })
+        
     return render(request, 'auth_user/register.html')
 
 def generate_uid():

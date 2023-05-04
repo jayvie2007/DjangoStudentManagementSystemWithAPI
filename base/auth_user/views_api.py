@@ -133,7 +133,6 @@ class getStudent(APIView):
 
 
 
-
 def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid

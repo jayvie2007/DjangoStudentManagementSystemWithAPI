@@ -15,4 +15,8 @@ urlpatterns = [
     path('database/add/', views_form.add, name="add"),
     path('datebase/edit/<str:student_number>', views_form.edit, name ="edit"),
     path('datebase/delete/<str:student_number>', views_form.delete, name ="delete"),
+    path('database/api/get/', views_api.getStudent.as_view(), name="databaseStudent"),
+    path('database/api/add/', views_form.add, name="addStudent"),
+    path('datebase/api/<str:student_number>', views_form.edit, name ="editStudent"),
+    path('datebase/<str:student_number>', views_form.delete, name ="deleteStudent"),
 ]

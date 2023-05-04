@@ -1,13 +1,15 @@
 {% extends 'auth_user/base.html/' %}
 {% load static %}
-{% block title %} Login {% endblock %}
+{% block title %} Register {% endblock %}
 {% block css %} {% endblock %}
 {% block header %} <link rel="stylesheet" type ="text/css" href="{% static 'css/login.css' %}"> {% endblock %}
 
 {% block body %}
+
+
 <div class="content">
 <div class="container-sm">
-    <form action = "{% url 'register_user' %}" method="post" class="row g-3">
+    <form action = "{% url 'register_user' %}" method="post" class="row g-3" >
         {% csrf_token %}
       <div class="col-md-4">
         <label for="inputEmail4" class="form-label">First Name:</label>
@@ -51,6 +53,5 @@
     </div>
     </form>
 </div>
-
 
 {% endblock %}
