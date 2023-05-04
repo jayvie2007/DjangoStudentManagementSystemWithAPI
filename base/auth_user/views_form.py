@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from .models import CustomUser, UserData
 from .forms import UserForm
 
+
+import random
 import uuid
 
 def index(request):
@@ -53,6 +55,11 @@ def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
 
+
+def generate_uid2():
+    uid = random.randint(10000000, 99999999)
+    return uid
+
 def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST['username']
@@ -99,7 +106,7 @@ def logout_view(request):
         
 def database(request):
     return render(request, 'auth_user/database.html',{
-        'userdata': UserData.objects.all()
+        'userdatas': UserData.objects.all()
         })
 
 
@@ -107,7 +114,7 @@ def add(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            new_student_number = generate_uid()
+            new_student_number = generate_uid2()
             new_first_name = form.cleaned_data['fname']
             new_middle_name = form.cleaned_data['mname']
             new_last_name = form.cleaned_data['lname']
@@ -124,10 +131,10 @@ def add(request):
                 course = new_course,
                 semester = new_semester,
             )
-            #new_student.save()
+            new_user.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
-                'success':True,
+                'success':True, 
             })
     else:
         form = UserForm()

@@ -5,10 +5,8 @@
 {% block header %} 
 
 <ul>
-  <li><a href="{% url 'index' %}">Home</a></li>
+  <li><a href="{% url 'index' %}">Dashboard</a></li>
   <li><a href="{% url 'add' %}">Add Data</a></li>
-  <li><a href="#">Edit Data</a></li>
-  <li><a href="#">Delete Data</a></li>
   <li><a href="#">LogOut</a></li>
 </ul> {% endblock %}
 
@@ -41,11 +39,12 @@
                     <tr>
                       <!--calling students data inside the loop-->
                       <td>{{ userdata.student_number }}</td>
-                      <td>{{ userdata.last_name }}</td>
-                      <td>{{ userdata.first_name }}</td>
-                      <td>{{ userdata.email }}</td>
+                      <td>{{ userdata.lname }}</td>
+                      <td>{{ userdata.fname }}</td>
+                      <td>{{ userdata.mname }}</td>
+                      <td>{{ userdata.year }}</td>
                       <td>{{ userdata.course }}</td>
-                      <td>{{ userdata.gpa }}</td>
+                      <td>{{ userdata.semester }}</td>
                       <td>
                         {% endfor %}
         </div>
