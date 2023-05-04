@@ -1,6 +1,6 @@
 {% extends 'auth_user/base.html/' %}
 {% load static %}
-{% block title %} Login {% endblock %}
+{% block title %} Add Student {% endblock %}
 {% block css %}<link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> {% endblock %}
 {% block header %} 
 
@@ -15,7 +15,7 @@
 {% if success %}
 <div class="alert alert-success" role="alert">
   The new student has been successfully added!
-  <a href="{% url 'index' %}" class="alert-link">Go to Home Page.</a>
+  <a href="{% url 'database' %}" class="alert-link">Go to Home Page.</a>
 </div>
 {% else %}
 <div class="row justify-content-center">

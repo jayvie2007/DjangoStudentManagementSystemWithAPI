@@ -108,21 +108,23 @@ def add(request):
         form = UserForm(request.POST)
         if form.is_valid():
             new_student_number = generate_uid()
-            new_first_name = form.cleaned_data['first_name']
-            new_last_name = form.cleaned_data['last_name']
-            new_email = form.cleaned_data['email']
+            new_first_name = form.cleaned_data['fname']
+            new_middle_name = form.cleaned_data['mname']
+            new_last_name = form.cleaned_data['lname']
+            new_year = form.cleaned_data['year']
             new_course = form.cleaned_data['course']
-            new_gpa = form.cleaned_data['gpa']
+            new_semester = form.cleaned_data['semester']
 
-            new_student = UserData(
+            new_user = UserData(
                 student_number = new_student_number,
-                first_name = new_first_name,
-                last_name = new_last_name,
-                email = new_email,
+                fname = new_first_name,
+                mname = new_middle_name,
+                lname = new_last_name,
+                year = new_year,
                 course = new_course,
-                gpa = new_gpa,
+                semester = new_semester,
             )
-            new_student.save()
+            #new_student.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
                 'success':True,

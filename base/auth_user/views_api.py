@@ -3,8 +3,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import CustomUser
-from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer
+from .models import CustomUser, UserData
+from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer, Student_Serializer
 
 from constant.status_code import * 
 
@@ -124,6 +124,13 @@ class loginAPI(APIView):
         if user.password == passwordInput:     
             return Response(data={"status": ok, 'message': login_success})
         return Response(data={"status": bad_request, 'message': incorrect_value})
+
+class getStudent(APIView):
+    def get(self, request):
+        student = UserData.objects.all()
+        serializers = Student_Serializer(student, many=True)
+        return Response({"Student Registered": serializers.data})
+
 
 
 
