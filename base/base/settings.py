@@ -126,6 +126,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# is used to call the custom user
 AUTH_USER_MODEL = 'auth_user.CustomUser'
 
+# Is used to locate the login page
 LOGIN_URL = 'login_user'

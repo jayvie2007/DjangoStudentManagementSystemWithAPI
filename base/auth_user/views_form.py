@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser, UserData
 from .forms import UserForm
-
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.hashers import make_password
 
 import random
@@ -67,39 +66,13 @@ def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST['username']
         password = request.POST['password']
-
-        User = get_user_model()
-        user1 = User.objects.all()
         user = auth.authenticate(request, username=username_or_email, password=password)
-        print(user1)
-
         if user is not None:
             auth.login(request,user)
             return redirect('index')
         else:
             messages.info(request, 'Invalid Username or Password')
             return redirect('login_user')
-
-        # try:
-        #             if '@' in username_or_email:
-        #                 email = CustomUser.objects.get(email = username_or_email) 
-        #                 if user is not None:
-        #                     auth.login(request,user)
-        #                     return redirect('index')
-        #                 else:
-        #                     messages.info(request, 'Invalid Username or Password')
-        #                     return redirect('login_user')
-        #             else: 
-        #                 input_user = CustomUser.objects.get(username = username_or_email)
-        #                 if user is not None:
-        #                     auth.login(request,user)
-        #                     return redirect('index')
-        #                 else:
-        #                     messages.info(request, 'Invalid Username or Password')
-        #                     return redirect('login_user')
-        # except:
-        #     return render(request, "auth_user/login.html")
-        
     else:
         return render(request, "auth_user/login.html")
     
@@ -148,5 +121,26 @@ def add(request):
     })
 
 @login_required     
-def edit(request):
-    return render(request, 'auth_user/edit.html')
+def edit(request, student_number):
+    if request.method =='POST':
+        users = UserData.objects.get(student_number=student_number)
+        form = UserForm(request.POST, instance=users)
+        if form.is_valid():
+            form.save()
+            return render(request, 'auth_user/edit.html', {
+                'form': form,
+                'success': True,
+            })
+    else:
+        users = UserData.objects.get(student_number=student_number)
+        form = UserForm(instance=users)
+        return render(request, 'auth_user/edit.html', {
+            'form':form
+        })
+    
+@login_required 
+def delete(request, student_number):
+    if request.method =='POST':
+        users = UserData.objects.get(student_number=student_number)
+        users.delete()
+        return HttpResponseRedirect(reverse('index'))
