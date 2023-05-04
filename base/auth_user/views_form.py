@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from .models import CustomUser, UserData
 from .forms import UserForm
 
+from django.contrib.auth.hashers import make_password
 
 import random
 import uuid
@@ -38,7 +39,7 @@ def register(request):
                     last_name = last_name,
                     username = username,
                     email = email,
-                    password = password,
+                    password = make_password(password),
                 )
                 new_user.save()
                 
@@ -67,7 +68,7 @@ def login_view(request):
 
         User = get_user_model()
         user1 = User.objects.all()
-        user = auth.authenticate(request, uid=username_or_email)
+        user = auth.authenticate(request, username=username_or_email, password=password)
         print(user1)
 
         if user is not None:

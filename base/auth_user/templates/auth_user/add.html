@@ -7,7 +7,7 @@
     <ul>
         <li><a href="{% url 'index' %}">Dashboard</a></li>
         <li><a href="{% url 'add' %}">Add Data</a></li>
-        <li><a href="#">LogOut</a></li>
+        <li><a href="{% logout_user %}">LogOut</a></li>
       </ul> {% endblock %}
       {% block body %}
 {% if success %}
