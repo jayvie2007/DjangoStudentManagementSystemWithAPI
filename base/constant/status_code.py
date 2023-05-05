@@ -20,5 +20,7 @@ incorrect_value = ['Incorrect input']
 
 #################VALIDATION###################
 
-username_exist = ['Username already exist!']
-email_exist = ['Email already exist!']
+username_exist = 'Username already exist!'
+email_exist = 'Email already exist!'
+password_not_match = "Password doesn't match!"
+login_fail = 'Invalid Username or Password'

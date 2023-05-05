@@ -4,10 +4,15 @@ from django.conf import settings
 # Create your models here.
     
 class CustomUser(AbstractUser):
+
     uid = models.CharField(max_length=8, default="")
     middle_name = models.CharField(max_length=255, null=True, blank=True, default="")
     groups = models.ManyToManyField(Group, blank=True, related_name='customuser_set')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='customuser_set')
+    
+    def __str__(self):
+        return self.username + " " + self.email
+
 
 class UserData(models.Model):
     student_number = models.CharField(max_length=8, default="")
@@ -19,4 +24,13 @@ class UserData(models.Model):
     semester = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.fname + self.lname
+        return self.fname + " " + self.lname
+    
+    #     APPOINTMENT_STATUS = (
+    #     ('pending', "Pending"),
+    #     ('approved', "Approved"),
+    #     ('cancelled', "Cancelled"),
+    #     ('completed', "Completed"),
+    # )
+
+    # add choices = APPOINTMENT_STATUS to dispaly dragdown
