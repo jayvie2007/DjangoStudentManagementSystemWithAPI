@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.hashers import make_password
 
+from constant.status_code import * 
+
 import random
 import uuid
 
@@ -26,18 +28,14 @@ def register(request):
 
         if password == confirm_password:
             if CustomUser.objects.filter(username=username):
-                print("username already exist")
-                message = 'Username already exist!'
                 return render(request, 'auth_user/register.html', {
                     'register_error': True,
-                    'messagestxt': message,
+                    'messagestxt': username_exist,
                 })
             if CustomUser.objects.filter(email=email):
-                print("email already exist")
-                message = 'Email already exist!'
                 return render(request, 'auth_user/register.html', {
                     'register_error': True,
-                    'messagestxt': message,
+                    'messagestxt': email_exist,
                 })
                    
             else:
@@ -53,16 +51,12 @@ def register(request):
                 #new_user.save()
                 print("success")
                 return render(request, 'auth_user/login.html',{
-                    'form': UserForm(),
                     'success': True,
                 })
         else:
-            form = UserForm()
-            message = "Password doesn't match!"
             return render(request, 'auth_user/register.html', {
-            'form': UserForm(),
             'register_error': True,
-            'messagestxt': message,
+            'messagestxt': password_not_match,
              })
         
     return render(request, 'auth_user/register.html')
@@ -70,7 +64,6 @@ def register(request):
 def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid
-
 
 def generate_uid2():
     uid = random.randint(10000000, 99999999)
@@ -86,9 +79,13 @@ def login_view(request):
             return redirect('index')
         else:
             messages.info(request, 'Invalid Username or Password')
-            return redirect('login_user')
+            return render('login_user', {
+            'register_error': True,
+            'messagestxt': login_fail,
+            })
     else:
-        return render(request, "auth_user/login.html")
+        return render(request, "auth_user/login.html", {
+        })
     
 def logout_view(request):
     auth.logout(request)
@@ -126,13 +123,12 @@ def add(request):
             new_user.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
-                'success':True, 
             })
     else:
         form = UserForm()
-    return render(request, 'auth_user/add.html',{
-    'form': UserForm()
-    })
+        return render(request, 'auth_user/add.html',{
+        'form': UserForm()
+        })
 
 @login_required     
 def edit(request, student_number):
@@ -143,7 +139,6 @@ def edit(request, student_number):
             form.save()
             return render(request, 'auth_user/edit.html', {
                 'form': form,
-                'success': True,
             })
     else:
         users = UserData.objects.get(student_number=student_number)

@@ -17,3 +17,8 @@ updated = ['Success Updating']
 register_success = ['Successfully Registered']
 login_success = ['Successfully Login']
 incorrect_value = ['Incorrect input']
+
+#################VALIDATION###################
+
+username_exist = ['Username already exist!']
+email_exist = ['Email already exist!']
