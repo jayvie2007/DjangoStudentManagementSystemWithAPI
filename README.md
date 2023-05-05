@@ -35,6 +35,15 @@ Then install the prequisite data
 
 <p>After entering the base folder you may now run the server</p>
 
+<p> in order to run the system first you must the data </p>
+
+```bash
+  python manage.py makemigrations
+  python manage.py migrate
+```
+
+<p>After migrating you may now run the server</p>
+
 <h3>Running Localhost server</h3>
 
 ```
