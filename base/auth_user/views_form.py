@@ -58,9 +58,11 @@ def register(request):
                 })
         else:
             form = UserForm()
-            messages.info(request, 'Password does not match')
-            return redirect('auth_user/register.html', {
-            'form': UserForm()
+            message = "Password doesn't match!"
+            return render(request, 'auth_user/register.html', {
+            'form': UserForm(),
+            'register_error': True,
+            'messagestxt': message,
              })
         
     return render(request, 'auth_user/register.html')

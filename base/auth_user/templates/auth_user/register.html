@@ -5,8 +5,59 @@
 {% block header %} <link rel="stylesheet" type ="text/css" href="{% static 'css/login.css' %}"> {% endblock %}
 
 {% block body %}
+{% if register_error %}
 
-
+  <div class="content">
+    <div class="container-sm">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <p> {{ messagestxt }}</p>
+             <button type ="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a></button>
+           </div>
+        <form action = "{% url 'register_user' %}" method="post" class="row g-3" >
+            {% csrf_token %}
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label">First Name:</label>
+            <input name = "first_name" type="text" class="form-control" id="input_firstname" required>
+          </div>
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label">Middle Name:</label>
+            <input name = "middle_name" type="text" class="form-control" id="input_firstname" required>
+          </div>
+          <div class="col-md-4">
+              <label for="inputEmail4" class="form-label">Last Name:</label>
+              <input name = "last_name" type="text" class="form-control" id="input_lastname" required>
+          </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Email:</label>
+                <input name = "email" type="email" class="form-control" id="input_email" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Username:</label>
+                <input name = "username" type="text" class="form-control" id="input_username" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Password:</label>
+                <input name = "password" type="password" class="form-control" id="input_password" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Confirm Password:</label>
+                <input name = "confirm_password" type="password" class="form-control" id="input_cpassword" required>
+            </div>
+            <div class="col-2">
+                <button type="button"><span></span><a href="{% url 'index' %}">Back</a></button>
+            </div>
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+            <p>Have an account? <br><a href="{% url 'login_user' %}">Login Here</a></p>
+            </div>
+            <div class="col-2">
+                <button type="submit"><span></span>Register</button>
+            </div>
+        </div>
+        </form>
+    </div>
+{% else %}
 <div class="content">
 <div class="container-sm">
     <form action = "{% url 'register_user' %}" method="post" class="row g-3" >
@@ -53,5 +104,5 @@
     </div>
     </form>
 </div>
-
+{% endif %}
 {% endblock %}
