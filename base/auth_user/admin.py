@@ -3,4 +3,7 @@ from .models import CustomUser, UserData
 
 # Register your models here.
 admin.site.register(CustomUser)
-admin.site.register(UserData)
+
+@admin.register(UserData)
+class UserDataAdmin(admin.ModelAdmin):
+    readonly_fields = ('student_number',)
