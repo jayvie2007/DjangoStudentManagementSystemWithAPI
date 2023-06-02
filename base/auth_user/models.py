@@ -30,9 +30,9 @@ class UserData(models.Model):
     course = models.CharField(max_length=50)
     semester = models.CharField(max_length=50)
 
-    def save(self):
-        self.student_number = str(random.randint(10000000, 99999999))
-        super(UserData, self).save()
+    # def save(self):
+    #     self.student_number = str(random.randint(10000000, 99999999))
+    #     super(UserData, self).save()
 
     def __str__(self):
         return self.first_name + " " + self.last_name

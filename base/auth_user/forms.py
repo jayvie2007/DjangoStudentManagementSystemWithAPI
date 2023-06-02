@@ -3,9 +3,9 @@ from .models import UserData
 
 class UserForm(forms.ModelForm):
     GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
     )
 
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Jayvie"}))

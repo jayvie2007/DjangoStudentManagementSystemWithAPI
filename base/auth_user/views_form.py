@@ -76,8 +76,9 @@ def login_view(request):
         user = auth.authenticate(request, username=username_or_email, password=password)
         if user is not None:
             auth.login(request,user)
-            return render(request, 'auth_user/login.html', {
+            return render(request, 'auth_user/database.html', {
             'success': True,
+            'userdatas': UserData.objects.all(),
             })
         else:
             return render(request, 'auth_user/login.html', {

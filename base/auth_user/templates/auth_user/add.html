@@ -1,37 +1,40 @@
 {% extends 'auth_user/base.html/' %}
 {% load static %}
 {% block title %} Add Student {% endblock %}
-{% block css %}<link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> {% endblock %}
+{% block css %}
+<link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> 
+{% endblock %}
 {% block header %} 
 
-    <ul>
-        <li><a href="{% url 'database' %}">Dashboard</a></li>
-        <li><a href="{% url 'add' %}">Add Data</a></li>
-        <li><a href="{% url 'logout_user' %}">LogOut</a></li>
-      </ul> {% endblock %}
-      {% block body %}
-{% if success %}
-<div class="alert alert-success" role="alert">
-  The new student has been successfully added!
-  <a href="{% url 'database' %}" class="alert-link">Go to Home Page.</a>
-</div>
-{% else %}
-<div class="container-sm">
-<div class="row justify-content-center">
-  <div class="col-6">
-    <div class="card bg-light mb-3">
-      <div class="card-header">
-        <i class="fa-solid fa-address-card fa-lg"></i> Student Registration
+<ul>
+  <li><a href="{% url 'database' %}">Dashboard</a></li>
+  <li><a href="{% url 'add' %}">Add Data</a></li>
+  <li><a href="{% url 'logout_user' %}">LogOut</a></li>
+</ul> {% endblock %}
+{% block body %}
+    {% if success %}
+      <div class="alert alert-success" role="alert">
+        The new student has been successfully added!
+        <a href="{% url 'database' %}" class="alert-link">Go to Home Page.</a>
       </div>
-      <div class="card-body">
-        <form action="{% url 'add' %}" method="POST">
-          {% csrf_token %} {{ form.as_p }}
-          <button type="submit" class="btn btn-primary">Add</button>
-          <a href="{% url 'database' %}" class="btn btn-secondary">Cancel</a>
-        </form>
+    {% else %}
+    <div class="container-sm">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div class="card bg-light mb-3">
+          <div class="card-header">
+            <i class="fa-solid fa-address-card fa-lg"></i> Student Registration
+          </div>
+          <div class="card-body">
+            <form action="{% url 'add' %}" method="POST">
+              {% csrf_token %} {{ form.as_p }}
+              <button type="submit" class="btn btn-primary">Add</button>
+              <a href="{% url 'database' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
-{% endif %} {% endblock %}
+    </div>
+  {% endif %}
+{% endblock %}

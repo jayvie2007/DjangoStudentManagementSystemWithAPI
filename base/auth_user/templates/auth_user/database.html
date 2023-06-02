@@ -1,7 +1,9 @@
 {% extends 'auth_user/base.html/' %}
 {% load static %}
 {% block title %} Dashboard {% endblock %}
-{% block css %}<link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> {% endblock %}
+{% block css %}
+  <link rel="stylesheet" type ="text/css" href="{% static 'css/index.css' %}"> 
+{% endblock %}
 {% block header %} 
 
 <ul>
@@ -11,14 +13,21 @@
 </ul> {% endblock %}
 
 {% block body %}
-<div class="container-sm">
-  <div class="row">
-    <div class="col=12">
-      <div class="card bg-light mg-4 mb-4">
-        <div class="card-header">
-          <i class="fa-solid fa-list fa-lg"></i> Student Records
-          <div class="card-body">
-            <p class="card-text">
+  <div class="container-sm">
+    <div class="row">
+      {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Welcome {{ request.user.username }} !!
+            <a href = "{% url 'database' %}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+        </div>
+        <br>
+      {% endif %}
+      <div class="col=12">
+        <div class="card bg-light mg-4 mb-4">
+          <div class="card-header">
+            <i class="fa-solid fa-list fa-lg"></i> Student Records
+            <div class="card-body">
+              <p class="card-text">
               <div class="table-responsive">
                 <table class="table table-hover">
                   <thead>
@@ -27,6 +36,7 @@
                       <th scope="col">Last Name</th>
                       <th scope="col">First Name</th>
                       <th scope="col">Middle Name</th>
+                      <th scope="col">Gender</th>
                       <th scope="col">Year</th>
                       <th scope="col">Course</th>
                       <th scope="col">Semester </th>
@@ -36,51 +46,54 @@
                   <tbody>
                     <!--Initialize loop to call students data in objects-->
                     {% for userdata in userdatas %}
-                    <tr>
-                      <!--calling students data inside the loop-->
-                      <td>{{ userdata.student_number }}</td>
-                      <td>{{ userdata.lname }}</td>
-                      <td>{{ userdata.fname }}</td>
-                      <td>{{ userdata.mname }}</td>
-                      <td>{{ userdata.year }}</td>
-                      <td>{{ userdata.course }}</td>
-                      <td>{{ userdata.semester }}</td>
-                      <td>
-                        <!-- EDIT -->
-                        <a class="btn btn-warning me-1" href="{% url 'edit' userdata.student_number %}">
-                          <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                        </a>
-                        <!-- EDIT -->
-                        <!-- DELETE -->
-                        <button type ="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{userdata.student_number}}"><i class="fa-solid fa-trash fa-lg"></i></button>
-                      <div class="modal" id="delete{{userdata.student_number}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">Student: {{ userdata.lname }}, {{ userdata.fname }}</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true"></span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <p>Are you sure you want to delete this student?</p>
-                            </div>
-                            <div class="modal-footer">
-                              <form action="{% url 'delete' userdata.student_number %}" method ='POST'>
-                                {% csrf_token %}
-                                <input type="submit" class="btn btn-primary" value="Delete">
-                              </form>
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                      <tr>
+                        <!--calling students data inside the loop-->
+                        <td>{{ userdata.student_number }}</td>
+                        <td>{{ userdata.last_name }}</td>
+                        <td>{{ userdata.first_name }}</td>
+                        <td>{{ userdata.middle_name }}</td>
+                        <td>{{ userdata.gender }}</td>
+                        <td>{{ userdata.year }}</td>
+                        <td>{{ userdata.course }}</td>
+                        <td>{{ userdata.semester }}</td>
+                        <td> <!-- EDIT -->
+                          <a class="btn btn-warning me-1" href="{% url 'edit' userdata.student_number %}">
+                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                          </a>
+                        
+                          <!-- DELETE -->
+                          <button type ="button" class="btn btn-danger custom-btn" data-bs-toggle="modal" data-bs-target="#delete{{userdata.student_number}}"><i class="fa-solid fa-trash fa-lg"></i></button>
+                          <div class="modal" id="delete{{userdata.student_number}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Student: {{ userdata.last_name }}, {{ userdata.first_name }}</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"></span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Are you sure you want to delete this student?</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <form action="{% url 'delete' userdata.student_number %}" method ='POST'>
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-primary" value="Delete">
+                                  </form>
+                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <!-- DELETE -->
-                        {% endfor %}
-                        
+                        </td><!-- DELETE -->
+                     </tr> 
+                    {% endfor %}
+                </table>     
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
