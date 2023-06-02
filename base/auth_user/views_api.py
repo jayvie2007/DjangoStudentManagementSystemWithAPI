@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.hashers import make_password
 
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .models import CustomUser, UserData
 from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer, Student_Serializer
@@ -9,7 +12,6 @@ from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSeria
 from constant.status_code import * 
 
 import uuid
-# Create your views here.
 
 class getUser(APIView):
     def get(self,request):
@@ -42,11 +44,15 @@ class registerUser(APIView):
         if passwordInput != passwordInput2:
             errors['password']=(f"the password does not match")
         if len(errors) != 0:
+            print(make_password("password"))
             return Response(data={'message':errors}, status=bad_request)
-             
+
+        
+        passwordInput=make_password(passwordInput)
         uid = generate_uid()
         request.data._mutable=True
         request.data['uid'] = uid
+        request.data['password'] = passwordInput
         request.data._mutable=False
         serializers = UserSerializer(data=request.data)
         if serializers.is_valid():
@@ -90,8 +96,7 @@ class deleteUser(APIView):
 class loginAPI(APIView):
     def post(self, request):
         errors = {}
-
-        required_fields = ['username', 'password', 'email']
+        required_fields = ['username', 'password',]
 
         for required_field in required_fields:
             if required_field not in request.data:
@@ -101,7 +106,6 @@ class loginAPI(APIView):
             return Response(data={'message':errors,}, status=bad_request)
         
         userInput = request.data['username']
-        emailInput = request.data['email']
         passwordInput = request.data['password']
         serializers = Login_UserSerializer(data = request.data)
         if serializers.is_valid():
@@ -112,16 +116,17 @@ class loginAPI(APIView):
                 try:
                     if '@' in emailInput:
                         email = CustomUser.objects.get(email = emailInput) 
-                        print(email)
-                        print(user.password)
+                        
                     else: 
                         input_user = CustomUser.objects.get(username = userInput)
-                        print(input_user)
-                        print(user.password)
+                        print(input_user.username)
+                        emailInput = user.email
+                        print(emailInput)
+                        #print(user.password)
                 except:
                     return Response(data={"status": bad_request, 'message': incorrect_value})
                 
-        if user.password == passwordInput:     
+        if user.password and passwordInput:     
             return Response(data={"status": ok, 'message': login_success})
         return Response(data={"status": bad_request, 'message': incorrect_value})
 
@@ -131,8 +136,13 @@ class getStudent(APIView):
         serializers = Student_Serializer(student, many=True)
         return Response({"Student Registered": serializers.data})
 
-
-
+# class StatusPageViewSet(viewsets.ViewSet):
+#     @action(detail=False, methods=['GET'])
+#     def students(self,request,state):
+#         student = UserData.objects.all()
+#         serializers = Student_Serializer(student, many=True)
+#         return Response({"Student Registered": serializers.data})   
+    
 def generate_uid():
     uid = uuid.uuid4().hex[-8:]
     return uid

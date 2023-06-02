@@ -76,10 +76,11 @@ def login_view(request):
         user = auth.authenticate(request, username=username_or_email, password=password)
         if user is not None:
             auth.login(request,user)
-            return redirect('index')
+            return render(request, 'auth_user/login.html', {
+            'success': True,
+            })
         else:
-            messages.info(request, 'Invalid Username or Password')
-            return render('login_user', {
+            return render(request, 'auth_user/login.html', {
             'register_error': True,
             'messagestxt': login_fail,
             })
@@ -104,18 +105,20 @@ def add(request):
         form = UserForm(request.POST)
         if form.is_valid():
             new_student_number = generate_uid2()
-            new_first_name = form.cleaned_data['fname']
-            new_middle_name = form.cleaned_data['mname']
-            new_last_name = form.cleaned_data['lname']
+            new_first_name = form.cleaned_data['first_name']
+            new_middle_name = form.cleaned_data['middle_name']
+            new_last_name = form.cleaned_data['last_name']
+            new_gender = form.cleaned_data['gender']
             new_year = form.cleaned_data['year']
             new_course = form.cleaned_data['course']
             new_semester = form.cleaned_data['semester']
 
             new_user = UserData(
                 student_number = new_student_number,
-                fname = new_first_name,
-                mname = new_middle_name,
-                lname = new_last_name,
+                first_name = new_first_name,
+                middle_name = new_middle_name,
+                last_name = new_last_name,
+                gender = new_gender,
                 year = new_year,
                 course = new_course,
                 semester = new_semester,
@@ -123,6 +126,7 @@ def add(request):
             new_user.save()
             return render(request, 'auth_user/add.html', {
                 'form': UserForm(),
+                'success': True,
             })
     else:
         form = UserForm()
