@@ -1,16 +1,27 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages, auth
-from django.contrib.auth.decorators import login_required
-from .models import CustomUser, UserData
-from .forms import UserForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+
+
+from .models import CustomUser, UserData
+from .forms import UserForm
 
 from constant.status_code import * 
 
 import random
 import uuid
+
+
+def generate_uid():
+    uid = uuid.uuid4().hex[-8:]
+    return uid
+
+def generate_uid2():
+    uid = random.randint(10000000, 99999999)
+    return uid
 
 def index(request):
     return render(request, 'auth_user/index.html')
@@ -61,14 +72,6 @@ def register(request):
         
     return render(request, 'auth_user/register.html')
 
-def generate_uid():
-    uid = uuid.uuid4().hex[-8:]
-    return uid
-
-def generate_uid2():
-    uid = random.randint(10000000, 99999999)
-    return uid
-
 def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST['username']
@@ -76,8 +79,9 @@ def login_view(request):
         user = auth.authenticate(request, username=username_or_email, password=password)
         if user is not None:
             auth.login(request,user)
-            return render(request, 'auth_user/login.html', {
+            return render(request, 'auth_user/database.html', {
             'success': True,
+            'userdatas': UserData.objects.all(),
             })
         else:
             return render(request, 'auth_user/login.html', {

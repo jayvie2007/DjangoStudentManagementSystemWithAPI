@@ -5,12 +5,16 @@
 
 }
 
-.banner {
-    width: 100%;
-    height: 100vh;
+body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(../img/img.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
     background-size: cover;
+}
 
+.custom-btn {
+    width: 30%;
 }
 
 .navbar {
