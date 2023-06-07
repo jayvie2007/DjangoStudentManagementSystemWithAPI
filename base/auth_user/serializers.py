@@ -23,3 +23,8 @@ class Student_Serializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
         exclude = ('id', 'student_number')
+
+class Students_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        exclude = ('id',)

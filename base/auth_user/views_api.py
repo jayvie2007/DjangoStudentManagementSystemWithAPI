@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password,check_password
 
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from .models import CustomUser, UserData
-from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer, Student_Serializer
+from .serializers import UserSerializer, UserSerialiazerEditAPI, Login_UserSerializer, Student_Serializer, Students_Serializer
 
 from constant.status_code import * 
 
@@ -106,7 +106,7 @@ class StatusPageViewStudentAPI(viewsets.ViewSet):
     @action(detail=False, methods=['GET'])
     def get_student(self,request):
         student = UserData.objects.all()
-        serializers = Student_Serializer(student, many=True)
+        serializers = Students_Serializer(student, many=True)
         return Response({"Student Registered": serializers.data}) 
     
     @action(detail=False, methods=['POST'])
@@ -143,7 +143,7 @@ class StatusPageViewStudentAPI(viewsets.ViewSet):
         return Response(serializers.errors, status=bad_request)
     
     @action(detail=False, methods=['PUT'])
-    def edit_user(self, request, student_number):
+    def edit_student(self, request, student_number):
         errors = {}
         
         required_fields = ['first_name','middle_name' ,'last_name','gender','year','course','semester']
@@ -166,7 +166,7 @@ class StatusPageViewStudentAPI(viewsets.ViewSet):
         return Response(serializers.errors, status=bad_request)
     
     @action(detail=False, methods=['DELETE'])
-    def delete_user(self, request, student_number):
+    def delete_student(self, request, student_number):
         try:
             users = CustomUser.objects.get(student_number = student_number)
         except UserData.DoesNotExist:
@@ -178,37 +178,29 @@ class StatusPageViewLoginUserAPI(viewsets.ViewSet):
     @action(detail=False, methods=['POST'])
     def login(self, request):
         errors = {}
-        required_fields = ['username', 'password',]
+        field_required_error = 'This field is required.'
+        incorrect_value = 'Incorrect username or password.'
+        ok = 'OK'
+        login_success = 'Login successful.'
+        bad_request = status.HTTP_400_BAD_REQUEST
+
+        required_fields = ['username', 'password']
 
         for required_field in required_fields:
             if required_field not in request.data:
                 errors[required_field] = field_required_error
 
-        if len(errors)!=0:
-            return Response(data={'message':errors,}, status=bad_request)
-        
-        userInput = request.data['username']
-        passwordInput = request.data['password']
-        serializers = Login_UserSerializer(data = request.data)
-        if serializers.is_valid():
-            try:
-                user = CustomUser.objects.get(username = userInput)
-            except CustomUser.DoesNotExist:
+        if len(errors) != 0:
+            return Response(data={'message': errors}, status=bad_request)
 
-                try:
-                    if '@' in emailInput:
-                        email = CustomUser.objects.get(email = emailInput) 
-                        
-                    else: 
-                        input_user = CustomUser.objects.get(username = userInput)
-                        print(input_user.username)
-                        emailInput = user.email
-                        print(emailInput)
-                        #print(user.password)
-                except:
-                    return Response(data={"status": bad_request, 'message': incorrect_value})
-                
-        if user.password and passwordInput:     
+        username_input = request.data['username']
+        password_input = request.data['password']
+        try:
+            user = CustomUser.objects.get(username=username_input)
+        except CustomUser.DoesNotExist:
+            return Response(data={"status": bad_request, 'message': incorrect_value})
+
+        if check_password(password_input, user.password):
             return Response(data={"status": ok, 'message': login_success})
-        return Response(data={"status": bad_request, 'message': incorrect_value})
-
+        else:
+            return Response(data={"status": bad_request, 'message': incorrect_value})
