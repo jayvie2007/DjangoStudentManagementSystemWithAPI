@@ -14,6 +14,15 @@ from constant.status_code import *
 import random
 import uuid
 
+
+def generate_uid():
+    uid = uuid.uuid4().hex[-8:]
+    return uid
+
+def generate_uid2():
+    uid = random.randint(10000000, 99999999)
+    return uid
+
 def index(request):
     return render(request, 'auth_user/index.html')
 
@@ -62,14 +71,6 @@ def register(request):
              })
         
     return render(request, 'auth_user/register.html')
-
-def generate_uid():
-    uid = uuid.uuid4().hex[-8:]
-    return uid
-
-def generate_uid2():
-    uid = random.randint(10000000, 99999999)
-    return uid
 
 def login_view(request):
     if request.method == 'POST':
