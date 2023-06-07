@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages, auth
-from django.contrib.auth.decorators import login_required
-from .models import CustomUser, UserData
-from .forms import UserForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+
+
+from .models import CustomUser, UserData
+from .forms import UserForm
 
 from constant.status_code import * 
 

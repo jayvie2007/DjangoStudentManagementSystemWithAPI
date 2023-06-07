@@ -13,19 +13,24 @@ from constant.status_code import *
 
 import uuid
 
-class getUser(APIView):
-    def get(self,request):
+def generate_uid():
+    uid = uuid.uuid4().hex[-8:]
+    return uid
+
+class StatusPageViewUserAPI(viewsets.ViewSet):
+    @action(detail=False, methods=['GET'])
+    def get_user(self,request):
         users = CustomUser.objects.all()
         serializers = UserSerializer(users, many=True)
         return Response({"User Registered": serializers.data})
-
-class registerUser(APIView):
-    def post(self,request):
+    
+    @action(detail=False, methods=['POST'])
+    def create_user(self,request):
         errors = {}
 
-#initialize the data from the database
+    #initialize the data from the database
         required_fields = ['first_name','middle_name' ,'last_name','email','username','password','password2']
-#then loop the data if that specific field is in the request.data if not error will be returned
+    #then loop the data if that specific field is in the request.data if not error will be returned
         for required_field in required_fields:
             if required_field not in request.data:
                 errors[required_field] = field_required_error
@@ -36,7 +41,7 @@ class registerUser(APIView):
         userInput = request.data['username']
         passwordInput = request.data['password']
         passwordInput2 = request.data['password2']
-       
+        
         if 'email' in request.data and CustomUser.objects.filter(email = emailInput).count() != 0:
             errors['email']=(f"the email {emailInput} is already taken!")
         if 'username' in request.data and CustomUser.objects.filter(username = userInput).count() != 0:
@@ -47,7 +52,6 @@ class registerUser(APIView):
             print(make_password("password"))
             return Response(data={'message':errors}, status=bad_request)
 
-        
         passwordInput=make_password(passwordInput)
         uid = generate_uid()
         request.data._mutable=True
@@ -59,9 +63,9 @@ class registerUser(APIView):
             serializers.save()
             return Response(data={"status": created, "message": register_success, "Users":serializers.data})
         return Response(serializers.errors, status=bad_request)
-
-class editUser(APIView):
-    def put(self, request, uid):
+    
+    @action(detail=False, methods=['PUT'])
+    def edit_user(self, request, uid):
         errors = {}
         
         required_fields = ['first_name','middle_name','last_name']
@@ -82,19 +86,26 @@ class editUser(APIView):
             serializers.save()
             return Response(data={'status':ok, 'message':updated})
         return Response(serializers.errors, status=bad_request)
-        
-class deleteUser(APIView):
-    def delete(self, request, uid):
+    
+    @action(detail=False, methods=['DELETE'])
+    def delete_user(self, request, uid):
         try:
             users = CustomUser.objects.get(uid = uid)
         except CustomUser.DoesNotExist:
-            return Response(data={'status': not_found})
+            return Response(data={'status': not_found, 'message': does_not_exist})
         users.delete()
-        return Response(data={'status': no_content})
+        return Response(data={'status': no_content, 'message':"Deleted Successfully"})
     
-
-class loginAPI(APIView):
-    def post(self, request):
+class StatusPageViewStudentAPI(viewsets.ViewSet):
+    @action(detail=False, methods=['GET'])
+    def students(self,request):
+        student = UserData.objects.all()
+        serializers = Student_Serializer(student, many=True)
+        return Response({"Student Registered": serializers.data}) 
+    
+class StatusPageViewLoginUserAPI(viewsets.ViewSet):
+    @action(detail=False, methods=['POST'])
+    def login(self, request):
         errors = {}
         required_fields = ['username', 'password',]
 
@@ -130,19 +141,3 @@ class loginAPI(APIView):
             return Response(data={"status": ok, 'message': login_success})
         return Response(data={"status": bad_request, 'message': incorrect_value})
 
-class getStudent(APIView):
-    def get(self, request):
-        student = UserData.objects.all()
-        serializers = Student_Serializer(student, many=True)
-        return Response({"Student Registered": serializers.data})
-
-# class StatusPageViewSet(viewsets.ViewSet):
-#     @action(detail=False, methods=['GET'])
-#     def students(self,request,state):
-#         student = UserData.objects.all()
-#         serializers = Student_Serializer(student, many=True)
-#         return Response({"Student Registered": serializers.data})   
-    
-def generate_uid():
-    uid = uuid.uuid4().hex[-8:]
-    return uid
