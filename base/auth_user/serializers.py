@@ -22,4 +22,4 @@ class Login_UserSerializer(serializers.ModelSerializer):
 class Student_Serializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = '__all__'
+        exclude = ('id', 'student_number')
