@@ -8,7 +8,11 @@
   <ul>
       <li><a href="{% url 'index' %}">Dashboard</a></li>
       <li><a href="{% url 'add' %}">Add Data</a></li>
-      <li><a href="{% url 'logout_user' %}">LogOut</a></li>
+      {% if request.user.is_authenticated %}
+        <li><a href="{% url 'index' %}">{{ request.user.username }}</a></li>
+        <li><a href="{% url 'logout_user' %}">Logout</a></li>
+      {% else %}
+      {% endif %}
   </ul> 
 {% endblock %}
 {% block body %}
