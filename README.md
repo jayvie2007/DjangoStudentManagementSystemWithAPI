@@ -51,7 +51,7 @@ Then install the prequisite data
 ```
 
 --------------------------------------------------------------------------------------------------------------------------
-<h2> System Overview </center>
+<h2> System Overview </h2>
 
 <h3> Homepage </h3>
 
@@ -66,7 +66,6 @@ Then install the prequisite data
 ![emailexist](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/0d6f0010-94a4-4936-88bb-0eb7cc057f63)
 
 ![password](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/36b2ff64-b7dc-49ba-b5ee-4f7b822ec969)
-
 
 <h3> Login </h3>
 
@@ -86,11 +85,58 @@ Then install the prequisite data
 
 ![added](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/45045d43-586a-4ca5-a600-4fed0d57a6d9)
 
+<h3> Dashboard </h3>
+
+![hasdata](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/cf87ec95-be6c-4e5b-96ff-b9f549a93b65)
+
 <h3> Edit Student </h3>
+
+![edit](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/6c5e6554-64b1-4e09-a3be-d721363d4042)
+
+![editsuccess](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/44eea7ad-d436-4dfe-ba2f-e15bd69bf856)
+
 
 <h3> Delete Student </h3>
 
 ![delete](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/3415d9f4-01c3-4f2b-b4c7-93f562bdde56)
+
+<h2> API Overview </h2>
+
+<h3> Get Student API </h3>
+
+![getStudent](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/322b365f-bf38-41dc-86a1-8e729570a7cd)
+
+<h3> Add Student API </h3>
+
+![addStudent](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/608645ee-f58b-4fd5-9a3c-0858ecc6a769)
+
+<h3> Edit Student API </h3>
+
+![editStudent](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/3668eb85-f86c-48cc-bd50-da3cf5f58eb4)
+
+<h3> Delete Student API </h3>
+
+![deleteUser](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/02969416-9fcf-49f7-8b45-a1fc5087348c)
+
+<h3> Login API </h3>
+
+![loginAPI](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/ee8dab39-9410-48af-b91b-ae5c7ffa31f0)
+
+<h3> Get User API </h3>
+
+![getUser](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/076feaa6-87a1-48a8-aa4e-9e43bf1ebb6a)
+
+<h3> Create User API </h3>
+
+![createUser](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/4e17469b-df22-4dcd-a886-9a10ecc23624)
+
+<h3> Edit User API </h3>
+
+![editUser](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/8eed415e-9f6f-4a87-b0a1-e0cc0b52fd3f)
+
+<h3> Delete User API </h3>
+
+![deleteUser](https://github.com/jayvie2007/DjangoStudentManagementSystemWithAPI/assets/123736031/baf139f2-fef5-47a6-aaf8-8d776e3e97a3)
 
 
 
