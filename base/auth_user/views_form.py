@@ -83,6 +83,7 @@ def login_view(request):
             'success': True,
             'userdatas': UserData.objects.all(),
             })
+            
         else:
             return render(request, 'auth_user/login.html', {
             'register_error': True,
@@ -160,4 +161,4 @@ def delete(request, student_number):
     if request.method =='POST':
         users = UserData.objects.get(student_number=student_number)
         users.delete()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('database'))

@@ -17,12 +17,12 @@ urlpatterns = [
     path('database/', views_form.database, name="database"),
     path('database/add/', views_form.add, name="add"),
     path('database/edit/<str:student_number>', views_form.edit, name ="edit"),
-    path('datebase/delete/<str:student_number>', views_form.delete, name ="delete"),
+    path('database/delete/<str:student_number>', views_form.delete, name ="delete"),
 
     #API
     path('', include(router.urls)),
     path('api/user/edit_user/<str:uid>/', views_api.StatusPageViewUserAPI.as_view({'put': 'edit_user'}), name='edit-user'),
     path('api/user/delete_user/<str:uid>/', views_api.StatusPageViewUserAPI.as_view({'delete': 'delete_user'}), name='delete-user'),
     path('api/student/edit_student/<str:student_number>/', views_api.StatusPageViewStudentAPI.as_view({'put': 'edit_student'}), name='edit-student'),
-    path('api/student/delete_student/<str:student_number/', views_api.StatusPageViewStudentAPI.as_view({'delete': 'delete_student'}), name='delete-student'),
+    path('api/student/delete_student/<str:student_number>/', views_api.StatusPageViewStudentAPI.as_view({'delete': 'delete_student'}), name='delete-student'),
 ]

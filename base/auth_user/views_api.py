@@ -136,7 +136,7 @@ class StatusPageViewStudentAPI(viewsets.ViewSet):
         request.data['student_number'] = uid
         request.data._mutable=False
 
-        serializers = Student_Serializer(data=request.data)
+        serializers = Students_Serializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(data={"status": created, "message": register_success, "Users":serializers.data})
@@ -168,7 +168,7 @@ class StatusPageViewStudentAPI(viewsets.ViewSet):
     @action(detail=False, methods=['DELETE'])
     def delete_student(self, request, student_number):
         try:
-            users = CustomUser.objects.get(student_number = student_number)
+            users = UserData.objects.get(student_number = student_number)
         except UserData.DoesNotExist:
             return Response(data={'status': not_found, 'message': does_not_exist})
         users.delete()
