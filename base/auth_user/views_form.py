@@ -148,6 +148,7 @@ def edit(request, student_number):
             form.save()
             return render(request, 'auth_user/edit.html', {
                 'form': form,
+                'success': True,
             })
     else:
         users = UserData.objects.get(student_number=student_number)
